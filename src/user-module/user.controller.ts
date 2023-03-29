@@ -1,3 +1,4 @@
+import { HttpExceptionFilter } from './filters/index';
 import { CreateUserDto } from './dto/create-user.dto';
 import {
   Body,
@@ -11,6 +12,7 @@ import {
 } from '@nestjs/common';
 import { User } from './interfaces/User.interface';
 import { UserService } from './user.service';
+import { UseFilters } from '@nestjs/common/decorators';
 
 @Controller('users')
 export class UserController {
@@ -21,6 +23,7 @@ export class UserController {
     return this.userService.getUsers();
   }
   @Get(':email')
+  @UseFilters(new HttpExceptionFilter())
   getUser(@Param('email') email: string): User {
     return this.userService.getUser(email);
   }

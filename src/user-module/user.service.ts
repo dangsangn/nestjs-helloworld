@@ -1,11 +1,15 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { User } from './interfaces/User.interface';
 
 @Injectable()
 export class UserService {
   private users: User[] = [];
   getUser(email: string): User {
-    return this.users.find((u: User) => u.email === email);
+    const user = this.users.find((u: User) => u.email === email);
+    if (user) {
+      return user;
+    }
+    throw new NotFoundException('user not found');
   }
   getUsers(): User[] {
     return this.users;
