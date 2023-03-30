@@ -8,5 +8,21 @@ export class CreateUserDto {
 
   @IsString()
   @IsDefined()
-  username: string;
+  first_name: string;
+
+  @IsString()
+  @IsDefined()
+  last_name: string;
+
+  @IsString()
+  @IsDefined()
+  phone: string;
+
+  @IsString()
+  @IsDefined()
+  address: string;
+
+  @IsString()
+  @IsDefined()
+  description: string;
 }
