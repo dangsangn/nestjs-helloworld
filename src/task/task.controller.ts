@@ -10,6 +10,7 @@ import {
   Res,
   UsePipes,
   ValidationPipe,
+  HttpStatus,
 } from '@nestjs/common';
 import { Response } from 'express';
 import { CreateTaskDto } from './dto/create-task.dto';
@@ -22,15 +23,15 @@ export class TaskController {
   constructor(private readonly taskService: TaskService) {}
 
   @Post()
-  create(@Body() createTaskDto: CreateTaskDto, @Res() res: Response) {
-    const task = this.taskService.create(createTaskDto);
-    return res.status(201).json(task);
+  async create(@Body() createTaskDto: CreateTaskDto, @Res() res: Response) {
+    const task = await this.taskService.create(createTaskDto);
+    return res.status(HttpStatus.OK).json(task);
   }
 
   @Get()
-  findAll(@Res() res: Response) {
-    const tasks = this.taskService.findAll();
-    return res.status(200).json(tasks);
+  async findAll(@Res() res: Response) {
+    const tasks = await this.taskService.findAll();
+    return res.status(HttpStatus.OK).json(tasks);
   }
 
   @Get('filter')
@@ -41,7 +42,7 @@ export class TaskController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string, @Res() res: Response) {
+  findOne(@Param('id') id: number, @Res() res: Response) {
     const task = this.taskService.findOne(id);
     return res.status(200).json(task);
   }
@@ -57,7 +58,7 @@ export class TaskController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string, @Res() res: Response) {
+  remove(@Param('id') id: number, @Res() res: Response) {
     const data = this.taskService.remove(id);
     return res.status(201).json(data);
   }
