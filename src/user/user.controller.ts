@@ -1,42 +1,31 @@
 import {
   Controller,
   Get,
-  Post,
-  Body,
+  HttpCode,
+  HttpStatus,
   Patch,
-  Param,
-  Delete,
+  UseGuards,
+  Body,
 } from '@nestjs/common';
+import { User } from '@prisma/client';
+import { GetUser } from '../auth/decorator';
+import { JwtGuard } from '../auth/guard';
 import { UserService } from './user.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { UpdateUserDto } from './dto';
 
-@Controller('user')
+@Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
-
-  @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.create(createUserDto);
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(JwtGuard)
+  @Get('/me')
+  getMe(@GetUser() user: User) {
+    return user;
   }
 
-  @Get()
-  findAll() {
-    return this.userService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(+id, updateUserDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.userService.remove(+id);
+  @UseGuards(JwtGuard)
+  @Patch()
+  async editUser(@GetUser('id') userId: number, @Body() edit: UpdateUserDto) {
+    return await this.userService.updateUser(userId, edit);
   }
 }

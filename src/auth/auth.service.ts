@@ -52,7 +52,7 @@ export class AuthService {
       throw new ForbiddenException('password is not correct');
     }
 
-    return this.getToken(user.id, user.email);
+    return { access_token: await this.getToken(user.id, user.email) };
   }
 
   async getToken(id: number, email: string) {
@@ -62,7 +62,7 @@ export class AuthService {
     };
     const secretKey = this.configService.get('SECRET_KEY_JWT');
     const token = await this.jwtService.signAsync(payload, {
-      expiresIn: '15m',
+      expiresIn: '1d',
       secret: secretKey,
     });
     return token;

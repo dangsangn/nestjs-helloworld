@@ -2,7 +2,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { TaskService } from './task.service';
 import { TaskController } from './task.controller';
-import { SimpleLoggerMiddleware } from 'src/middleware';
+import { SimpleLoggerMiddleware } from '../middleware';
 import { Task } from './entities/task.entity';
 
 @Module({
