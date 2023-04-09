@@ -2,14 +2,14 @@ import { IsOptional, IsString } from 'class-validator';
 
 export class CreateBookmarkDto {
   @IsString()
-  @IsOptional()
-  title?: string;
+  // @IsOptional()
+  title: string;
 
   @IsString()
   @IsOptional()
   description?: string;
 
   @IsString()
-  @IsOptional()
-  link?: string;
+  // @IsOptional()
+  link: string;
 }
